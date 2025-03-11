@@ -15,71 +15,69 @@
 
     <!-- Cuerpo -->
     <div class="container">
-      <n-form ref="formRef" :model="model" :rules="rules" label-placement="top">
-        <!-- Contenedor de los elementos del formulario -->
-         <div class="form-item">
-            <p>Rol*</p>
-            <n-select v-model:value="model.rol" placeholder="Seleccionar rol" :options="optionsRol"/>
-          </div>
-        <div class="form-grid">
-          
-          <div class="form-item">
-            <p>Nombre(s)*</p>
-            <n-input v-model:value="model.nombre" placeholder="Ingrese nombre" />
-          </div>
-          <div class="form-item">
-            <p>Apellido(s)*</p>
-            <n-input v-model:value="model.apellidos" placeholder="Ingrese apellidos" />
-          </div>
-          <div class="form-item">
-            <p>Departamento*</p>
-            <n-select v-model:value="model.departamento" placeholder="Seleccionar departamento" :options="optionsDepartment"/>
-          </div>
-          <div class="form-item">
-            <p>Puesto*</p>
-            <n-select v-model:value="model.puesto" placeholder="Seleccionar puesto" :options="optionsJob"/>
-          </div>
-          <div class="form-item">
-            <p>Código de usuario*</p>
-            <n-input disabled v-model:value="model.codigoUsuario" placeholder="Ingrese código de usuario" />
-          </div>
-          <div class="form-item">
-            <p>Correo electrónico*</p>
-            <n-input v-model:value="model.correo" placeholder="Ingrese correo electrónico" />
-          </div>
-          <div class="form-item">
-            <p>Foto de perfil</p>
-            <n-upload>
-              <n-upload-dragger>
-                <div style="margin-bottom:12px">
-                  <n-icon size="48" :depth="3">
-                    <ArchiveIcon/>
-                  </n-icon>
-                </div>
-                <n-text style="font-size:16px">
-                  Arrastra tu imagen aqui, o has click para seleccionar
-                </n-text>
-                <n-p depth="3" style="margin: 8px 0 0 0">Maximo 5 MB</n-p>
-              </n-upload-dragger>
-            </n-upload>
-          </div>
-          <div class="form-item">
-            <p>Firma del empleado*</p>
-            <n-upload>
-              <n-upload-dragger>
-                <div style="margin-bottom:12px">
-                  <n-icon size="48" :depth="3">
-                    <ArchiveIcon/>
-                  </n-icon>
-                </div>
-                <n-text style="font-size:16px">
-                  Arrastra tu imagen aqui, o has click para seleccionar
-                </n-text>
-                <n-p depth="3" style="margin: 8px 0 0 0">Maximo 5 MB</n-p>
-              </n-upload-dragger>
-            </n-upload>
-          </div>
-        </div>
+
+      <n-form
+        ref="formRef"
+        :model="formValue"
+        :rules="rules"
+        label-placement="top">
+
+        <n-form-item label="Rol*">
+          <n-select v-model:value="formValue.roles" placeholder="Selecciona rol" :options="optionsRol" :key="formValue.roles" />
+        </n-form-item>
+
+        <n-grid :cols="2" :x-gap="24" responsive="screen">
+          <n-form-item-gi path="rol" label="Nombre(s)*">
+            <n-input v-model:value="formValue.nombre" placeholder="Ingrese nombre(s)"/>
+          </n-form-item-gi>
+          <n-form-item-gi path="lastname" label="Apellidos*">
+            <n-input v-model:value="formValue.apellidos" placeholder="Ingrese apellidos"/>
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-grid :cols="2" :x-gap="24" responsive="screen">
+          <n-form-item-gi path="department" label="Departamentos">
+            <n-select v-model:value="formValue.departamento" placeholder="Seleccionar departamento" :options="optionsDepartment"/>
+          </n-form-item-gi>
+          <n-form-item-gi path="job" label="Puesto">
+            <n-select v-model:value="formValue.puesto" placeholder="Seleccionar puesto" :options="optionsJob"/>
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-grid :cols="2" :x-gap="24" responsive="screen">
+          <n-form-item-gi path="codeEmployee" label="Código de empleado">
+            <n-input disabled v-model:value="formValue.codigoUsuario" placeholder="Ingrese código de empleado"/>
+          </n-form-item-gi>
+          <n-form-item-gi path="email" label="Correo electrónico">
+            <n-input v-model:value="formValue.email" placeholder="Ingrese correo electrónico"/>
+          </n-form-item-gi>
+        </n-grid>
+
+        <n-grid :cols="2" :x-gap="24" responsive="screen">
+          <n-form-item-gi path="codeEmployee" label="Foto de perfil">
+            <n-upload @change="(file) => formValue.fotoPerfil = file.file">
+  <n-upload-dragger>
+    <n-text>Arrastra tu imagen aquí o haz clic</n-text>
+    <n-p depth="3">Máximo 5 MB</n-p>
+  </n-upload-dragger>
+</n-upload>
+
+          </n-form-item-gi>
+          <n-form-item-gi path="sign" label="Firma del empleado">
+            <n-upload @change="(file) => formValue.fotoPerfil = file.file">
+  <n-upload-dragger>
+    <n-text>Arrastra tu imagen aquí o haz clic</n-text>
+    <n-p depth="3">Máximo 5 MB</n-p>
+  </n-upload-dragger>
+</n-upload>
+
+          </n-form-item-gi>
+        </n-grid>
+        <n-form-item>
+          <n-button @click="handleValidateClick">
+            Actualizar empleado
+          </n-button>
+        </n-form-item>
       </n-form>
     </div>
   </div>
@@ -87,32 +85,88 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+
 export default defineComponent({
   setup() {
     const formRef = ref(null);
     
+    // Datos del formulario
+     const formValue = ref({
+      roles: null, // Corregido: antes era `rol`
+      nombre: "",
+      apellidos: "",
+      departamento: "",
+      puesto: "",
+      codigoUsuario: "",
+      email: "", // Corregido: antes era `correo`
+      telefono: "",
+      firmaEmpleado: null,
+      fotoPerfil: null,
+    });
     return {
       formRef,
-      model: ref({
-        rol: null,
-        nombre: "",
-        apellidos: "",
-        departamento: "",
-        puesto: "",
-        codigoUsuario: "",
-        correo: "",
-        telefono: "",
+      optionsRol:[
+        {
+          label:"Valor 1",
+          value:"valor1"
+        },
+        {
+          label:"Valor 2",
+          value:"valor2"
+        }
+      ],
+      optionsDepartment:[
+        {
+          label:"Valor 1",
+          value:"valor1"
+        },
+        {
+          label:"Valor 2",
+          value:"valor2"
+        }
+      ],
+      optionsJob:[
+        {
+          label:"Valor 1",
+          value:"valor1"
+        },
+        {
+          label:"Valor 2",
+          value:"valor2"
+        }
+      ],
+      formValue:ref({
+        name:"",
+        apellidos:"",
+        departamento:"",
+        puesto:"",
+        codigoUsuario:"",
+        email:"",
+        fotoPerfil:null,
+        firmaEmpleado:null
       }),
-      optionsRol: ["Administrador", "Evaluador", "Empleado"].map(v => ({
-        label: v,
-        value: v,
-      })),
-      optionsDepartment: ["Departamento 1", "Departamento 2", "Departamento 3"],
-      optionsJob: ["Puesto 1", "Puesto 2", "Puesto 3"],
+      rules:{
+        name:{
+          required:true,
+          trigger:"blur"
+        }
+      },
+      handleValidateClick(e){
+        e.preventDefault();
+        formRef.value?.validate((errors)=>{
+          if(!errors){
+            console.log("Sin errores", JSON.stringify (formValue.value));
+          }else{
+            console.log(errors);
+            
+          }
+        })
+      }
     };
   },
 });
 </script>
+
 
 <style>
 /* Cabecera */
