@@ -18,17 +18,16 @@
       <div>
         <n-grid x-gap="80" :cols="3">
           <n-gi>
-            <n-card style="border-color:#0D5A79;border:2px;border-style:solid;border-radius: 10px;" size="small" title="Cursos Tomados"> 000 </n-card>
+            <CardDashboardComponent title="Cursos Tomados" count="23" />
           </n-gi>
           <n-gi>
-            <n-card style="border-color:#0D5A79;border:2px;border-style:solid;border-radius: 10px;" size="small" title="Cursos Pendientes"> 000 </n-card>
+            <CardDashboardComponent title="Cursos Pendientes" count="2" />
           </n-gi>
           <n-gi>
-            <n-card style="border-color:#0D5A79;border:2px;border-style:solid;border-radius: 10px;" size="small" title="Cursos Faltantes"> 000 </n-card>
+            <CardDashboardComponent title="Cursos Faltantes" count="2" />
           </n-gi>
         </n-grid>
       </div>
-
       <!-- SECCIÓN DE GRAFICA Y LISTAS -->
       <div class="container-body">
         <div class="leftside">
@@ -44,8 +43,8 @@
               <div v-if="loading">Cargando...</div>
               <div v-else-if="error">Sin datos</div>
               <div v-else>
-                <n-infinite-scroll style="height: 240px" :distance="10" @load="handleLoad">
-                  <CardComponent v-for="curso in cursosR" :key="curso.id" :course="curso.curso" :extra="curso.extra"/>
+                <n-infinite-scroll style="height: 50vh" :distance="10" @load="handleLoad">
+                  <CardComponent v-for="curso in cursosR" :key="curso.id" :course="curso" :extra="curso.extra"/>
                 </n-infinite-scroll>
               </div>
             </n-layout>
@@ -54,7 +53,7 @@
         <div class="rightside">
           <n-layout style="border:2px;border-style: solid; border-color: #0D5A79; border-radius: 10px;">
               <h3>Examenes asignados</h3>
-              <n-infinite-scroll style="height: 95vh" :distance="10" @load="handleLoad">
+              <n-infinite-scroll style="height: 100vh" :distance="10" @load="handleLoad">
                 <CardComponent bgColor="green"/>
                 <CardComponent bgColor="green"/>
               </n-infinite-scroll>
@@ -70,14 +69,16 @@ import { defineComponent,ref,onMounted} from 'vue';
 import { DoughnutChart } from 'vue-chart-3';
 import { Chart, registerables } from "chart.js";
 import CardComponent from '../components/CardComponent.vue'
+import CardDashboardComponent from '../components/CardDashboardComponent.vue';
+import { getCursos } from '@/services/apiDashboard.js';
 
 Chart.register(...registerables);
 
 export default defineComponent({
   name: 'DashboardEmployeeView',
-  components: { DoughnutChart,CardComponent },
+  components: { DoughnutChart,CardComponent,CardDashboardComponent },
   setup() {
-    const cursosR = ref([]); //para cursos realizados del mes
+    const cursosR = ref(null); //para cursos realizados del mes
     const cursosA = ref([]); // para cursos asignados del mes
     const loading = ref(true);
     const error = ref(false);
@@ -99,8 +100,15 @@ export default defineComponent({
       ],
     };
 
-    onMounted(() => {
-      console.log("Aqui ira el consumo de la api");
+    onMounted(async () => {
+      try {
+        const data = await getCursos();
+        cursosR.value = data;
+      } catch (error) {
+        console.error('Hubo un error:', error);
+      }finally{
+        loading.value = false;
+      }
     });
 
     return { testData ,options, cursosR,cursosA,loading,error};
@@ -148,7 +156,7 @@ export default defineComponent({
   }
 
   .leftside, .rightside {
-    width: 100%;
+    
     height: 50vh;
   }
 }
