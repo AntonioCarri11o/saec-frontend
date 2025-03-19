@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>    
+    <router-view />
   </div>
 </template>
 
@@ -11,7 +11,7 @@
 </script>
 
 <style>
-  body {
-    font-family: 'Inter', sans-serif;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+}
 </style>
