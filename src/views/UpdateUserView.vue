@@ -9,74 +9,66 @@
         </n-breadcrumb>
       </div>
       <div>
-        <h1>Editar Empleado</h1>
+        <p>Editar Empleado</p>
       </div>
     </div>
 
     <!-- Cuerpo -->
     <div class="container">
-
-      <n-form
-        ref="formRef"
-        :model="formValue"
-        :rules="rules"
-        label-placement="top">
-
-        <n-form-item label="Rol*">
-          <n-select v-model:value="formValue.roles" placeholder="Selecciona rol" :options="optionsRol" :key="formValue.roles" />
+      <n-form ref="formRef" :model="formValue" :rules="rules" label-placement="top">
+        <n-form-item path="rol" label="Rol">
+          <n-select
+            v-model:value="formValue.roles"
+            placeholder="Selecciona rol"
+            :options="optionsRol"
+          />
         </n-form-item>
 
-        <n-grid :cols="2" :x-gap="24" responsive="screen">
-          <n-form-item-gi path="rol" label="Nombre(s)*">
-            <n-input v-model:value="formValue.nombre" placeholder="Ingrese nombre(s)"/>
-          </n-form-item-gi>
-          <n-form-item-gi path="lastname" label="Apellidos*">
-            <n-input v-model:value="formValue.apellidos" placeholder="Ingrese apellidos"/>
-          </n-form-item-gi>
-        </n-grid>
+        <div class="grid-container">
+          <n-form-item path="nombre" label="Nombre(s)">
+            <n-input v-model:value="formValue.nombre" placeholder="Ingrese nombre(s)" />
+          </n-form-item>
+          <n-form-item path="apellidos" label="Apellidos">
+            <n-input v-model:value="formValue.apellidos" placeholder="Ingrese apellidos" />
+          </n-form-item>
+        </div>
 
-        <n-grid :cols="2" :x-gap="24" responsive="screen">
-          <n-form-item-gi path="department" label="Departamentos">
-            <n-select v-model:value="formValue.departamento" placeholder="Seleccionar departamento" :options="optionsDepartment"/>
-          </n-form-item-gi>
-          <n-form-item-gi path="job" label="Puesto">
-            <n-select v-model:value="formValue.puesto" placeholder="Seleccionar puesto" :options="optionsJob"/>
-          </n-form-item-gi>
-        </n-grid>
+        <div class="grid-container">
+          <n-form-item path="departamentos" label="Departamentos">
+            <n-select
+              v-model:value="formValue.departamento"
+              placeholder="Seleccionar departamento"
+              :options="optionsDepartment"
+            />
+          </n-form-item>
+          <n-form-item path="job" label="Puesto">
+            <n-select
+              v-model:value="formValue.puesto"
+              placeholder="Seleccionar puesto"
+              :options="optionsJob"
+            />
+          </n-form-item>
+        </div>
 
-        <n-grid :cols="2" :x-gap="24" responsive="screen">
-          <n-form-item-gi path="codeEmployee" label="Código de empleado">
-            <n-input disabled v-model:value="formValue.codigoUsuario" placeholder="Ingrese código de empleado"/>
-          </n-form-item-gi>
-          <n-form-item-gi path="email" label="Correo electrónico">
-            <n-input v-model:value="formValue.email" placeholder="Ingrese correo electrónico"/>
-          </n-form-item-gi>
-        </n-grid>
+        <div class="grid-container">
+          <n-form-item path="codeEmployee" label="Código de empleado">
+            <n-input disabled v-model:value="formValue.codigoUsuario" />
+          </n-form-item>
+          <n-form-item path="email" label="Correo electrónico">
+            <n-input v-model:value="formValue.email" placeholder="Ingrese correo electrónico" />
+          </n-form-item>
+        </div>
 
-        <n-grid :cols="2" :x-gap="24" responsive="screen">
-          <n-form-item-gi path="codeEmployee" label="Foto de perfil">
-            <n-upload @change="(file) => formValue.fotoPerfil = file.file">
-  <n-upload-dragger>
-    <n-text>Arrastra tu imagen aquí o haz clic</n-text>
-    <n-p depth="3">Máximo 5 MB</n-p>
-  </n-upload-dragger>
-</n-upload>
-
-          </n-form-item-gi>
-          <n-form-item-gi path="sign" label="Firma del empleado">
-            <n-upload @change="(file) => formValue.fotoPerfil = file.file">
-  <n-upload-dragger>
-    <n-text>Arrastra tu imagen aquí o haz clic</n-text>
-    <n-p depth="3">Máximo 5 MB</n-p>
-  </n-upload-dragger>
-</n-upload>
-
-          </n-form-item-gi>
-        </n-grid>
-        <n-form-item>
-          <n-button @click="handleValidateClick">
-            Actualizar empleado
-          </n-button>
+        <n-form-item path="sign" label="Firma del empleado">
+          <n-upload accept=".jpg,.jpeg,.png" @change="(file) => (formValue.firmaEmpleado = file.file)">
+            <n-upload-dragger>
+              <n-text>Arrastra tu imagen aquí, o <n-text style="color:#1d8ec6;">haz clic para seleccionar</n-text></n-text>
+              <n-p depth="3">Máximo 5 MB</n-p>
+            </n-upload-dragger>
+          </n-upload>
+        </n-form-item>
+        <n-form-item style="display:flex; justify-content: center;">
+          <n-button type="primary" style="border-radius:10px;" @click="handleValidateClick">Actualizar empleado</n-button>
         </n-form-item>
       </n-form>
     </div>
@@ -88,118 +80,141 @@ import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   setup() {
+    const rules = {
+      nombre: [
+        {
+          required: true,
+          validator(rule, value) {
+            if (!value) {
+              return new Error("Nombre es obligatorio");
+            // } else if (!/^\d*$/.test(value)) {
+            //   return new Error("Age should be an integer");
+            } else if (value.length < 3) {
+              return new Error("El nombre debe tener al menos 3 caracteres.");
+            }
+            return true;
+          },
+          trigger: ["input", "blur"]
+        }
+      ],
+      rol: [
+        {
+          required: true,
+          validator(rule,value){
+            if(!value){
+              return new Error("Rol es obligatorio");
+            }
+            return true;
+          },
+          trigger: ["input", "blur"]
+        }
+      ],
+      apellidos: [
+        {
+          required: true,
+          validator(rule, value) {
+            if (!value) {
+              return new Error("Apellidos es obligatorio");
+            } else if (value.length < 3) {
+              return new Error("El nombre debe tener al menos 3 caracteres.");
+            }
+            return true;
+          },
+          trigger: ["input", "blur"]
+        }
+      ],
+      departamentos: [
+        {
+          required: true,
+          validator(rule,value){
+            if(!value){
+              return new Error("Rol es obligatorio");
+            }
+            return true;
+          },
+          trigger: ["input", "blur"]
+        }
+      ]
+    };
     const formRef = ref(null);
-    
-    // Datos del formulario
-     const formValue = ref({
-      roles: null, // Corregido: antes era `rol`
-      nombre: "",
-      apellidos: "",
-      departamento: "",
-      puesto: "",
-      codigoUsuario: "",
-      email: "", // Corregido: antes era `correo`
-      telefono: "",
+    const formValue = ref({
+      roles: null,
+      nombre: "Joana Andrea",
+      apellidos: "Quintero Martinez",
+      departamento: "Almacen",
+      puesto: "Acomodador",
+      codigoUsuario: "23413",
+      email: "ejemplo@gmail.com",
       firmaEmpleado: null,
-      fotoPerfil: null,
     });
+
     return {
       formRef,
-      optionsRol:[
-        {
-          label:"Valor 1",
-          value:"valor1"
-        },
-        {
-          label:"Valor 2",
-          value:"valor2"
-        }
+      optionsRol: [
+        { label: "Administrador", value: "valor1" },
+        { label: "Empleado", value: "valor2" },
       ],
-      optionsDepartment:[
-        {
-          label:"Valor 1",
-          value:"valor1"
-        },
-        {
-          label:"Valor 2",
-          value:"valor2"
-        }
+      optionsDepartment: [
+        { label: "Laboratorio", value: "valor1" },
+        { label: "Almacen", value: "valor2" },
       ],
-      optionsJob:[
-        {
-          label:"Valor 1",
-          value:"valor1"
-        },
-        {
-          label:"Valor 2",
-          value:"valor2"
-        }
+      optionsJob: [
+        { label: "Almacenista", value: "valor1" },
+        { label: "Acomodador", value: "valor2" },
       ],
-      formValue:ref({
-        name:"",
-        apellidos:"",
-        departamento:"",
-        puesto:"",
-        codigoUsuario:"",
-        email:"",
-        fotoPerfil:null,
-        firmaEmpleado:null
-      }),
-      rules:{
-        name:{
-          required:true,
-          trigger:"blur"
-        }
-      },
-      handleValidateClick(e){
+      formValue,
+      rules,
+      handleValidateClick(e) {
         e.preventDefault();
-        formRef.value?.validate((errors)=>{
-          if(!errors){
-            console.log("Sin errores", JSON.stringify (formValue.value));
-          }else{
+        formRef.value?.validate((errors) => {
+          if (!errors) {
+            console.log("Sin errores", JSON.stringify(formValue.value));
+          } else {
             console.log(errors);
-            
           }
-        })
-      }
+        });
+      },
     };
   },
 });
 </script>
 
-
 <style>
-/* Cabecera */
 .header {
-  margin: 20px;
-  padding: 0px 30px 0px 30px;
-  justify-content: space-between;
-  align-items: center;
+  padding: 12px 30px;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: auto;
 }
 
-/* Contenedor principal */
+.header p {
+  margin: 0;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+
 .container {
   padding: 20px;
-  margin: 20px;
 }
 
-/* Grid de formulario usando Flexbox */
-.form-grid {
+.grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 2 columnas */
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
 }
 
-.form-item {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Responsive: Cambiar a una sola columna en pantallas pequeñas */
 @media (max-width: 768px) {
-  .form-grid {
-    grid-template-columns: 1fr; /* Cambia a una sola columna */
+  .grid-container {
+    grid-template-columns: 1fr;
   }
 }
 </style>
