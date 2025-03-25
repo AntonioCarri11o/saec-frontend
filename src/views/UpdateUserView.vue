@@ -16,7 +16,7 @@
     <!-- Cuerpo -->
     <div class="container">
       <n-form ref="formRef" :model="formValue" :rules="rules" label-placement="top">
-        <n-form-item path="rol" label="Rol">
+        <n-form-item path="roles" label="Rol">
           <n-select
             v-model:value="formValue.roles"
             placeholder="Selecciona rol"
@@ -36,12 +36,12 @@
         <div class="grid-container">
           <n-form-item path="departamentos" label="Departamentos">
             <n-select
-              v-model:value="formValue.departamento"
+              v-model:value="formValue.departamentos"
               placeholder="Seleccionar departamento"
               :options="optionsDepartment"
             />
           </n-form-item>
-          <n-form-item path="job" label="Puesto">
+          <n-form-item path="puesto" label="Puesto">
             <n-select
               v-model:value="formValue.puesto"
               placeholder="Seleccionar puesto"
@@ -59,8 +59,8 @@
           </n-form-item>
         </div>
 
-        <n-form-item path="sign" label="Firma del empleado">
-          <n-upload accept=".jpg,.jpeg,.png" @change="(file) => (formValue.firmaEmpleado = file.file)">
+        <n-form-item path="firmaEmpleado" label="Firma del empleado">
+          <n-upload @change="handleFileUpload" accept=".jpg,.jpeg,.png">
             <n-upload-dragger>
               <n-text>Arrastra tu imagen aquí, o <n-text style="color:#1d8ec6;">haz clic para seleccionar</n-text></n-text>
               <n-p depth="3">Máximo 5 MB</n-p>
@@ -80,75 +80,131 @@ import { defineComponent, ref } from "vue";
 
 export default defineComponent({
   setup() {
-    const rules = {
-      nombre: [
-        {
-          required: true,
-          validator(rule, value) {
-            if (!value) {
-              return new Error("Nombre es obligatorio");
-            // } else if (!/^\d*$/.test(value)) {
-            //   return new Error("Age should be an integer");
-            } else if (value.length < 3) {
-              return new Error("El nombre debe tener al menos 3 caracteres.");
-            }
-            return true;
-          },
-          trigger: ["input", "blur"]
+    const handleValidateClick = async () => {
+  try {
+    await formRef.value?.validate();
+    console.log("Formulario válido:", JSON.stringify(formValue.value));
+  } catch (errors) {
+    return Promise.resolve();
+  }
+};
+
+    const handleFileUpload = (file) => {
+  if (file.file) {
+    formValue.value.firmaEmpleado = file.file;
+  } else {
+    formValue.value.firmaEmpleado = null;
+  }
+};
+
+const rules = {
+  nombre: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return Promise.reject("Nombre es obligatorio");
+        } else if (value.length < 3) {
+          return new Error("El nombre debe tener al menos 3 caracteres.");
         }
-      ],
-      rol: [
-        {
-          required: true,
-          validator(rule,value){
-            if(!value){
-              return new Error("Rol es obligatorio");
-            }
-            return true;
-          },
-          trigger: ["input", "blur"]
+        return true;
+      },
+      trigger: ["input", "blur"],
+    },
+  ],
+  apellidos: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("Los apellidos son obligatorios.");
+        } else if (value.length < 3) {
+          return new Error("Los apellidos deben tener al menos 3 caracteres.");
         }
-      ],
-      apellidos: [
-        {
-          required: true,
-          validator(rule, value) {
-            if (!value) {
-              return new Error("Apellidos es obligatorio");
-            } else if (value.length < 3) {
-              return new Error("El nombre debe tener al menos 3 caracteres.");
-            }
-            return true;
-          },
-          trigger: ["input", "blur"]
+        return true;
+      },
+      trigger: ["input", "blur"],
+    },
+  ],
+  roles: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("El rol es obligatorio.");
         }
-      ],
-      departamentos: [
-        {
-          required: true,
-          validator(rule,value){
-            if(!value){
-              return new Error("Rol es obligatorio");
-            }
-            return true;
-          },
-          trigger: ["input", "blur"]
+        return true;
+      },
+      trigger: ["change", "blur"],
+    },
+  ],
+  departamentos: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("El departamento es obligatorio.");
         }
-      ]
-    };
+        return true;
+      },
+      trigger: ["change", "blur"],
+    },
+  ],
+  puesto: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("El puesto es obligatorio.");
+        }
+        return true;
+      },
+      trigger: ["change", "blur"],
+    },
+  ],
+  email: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("El correo electrónico es obligatorio.");
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+          return new Error("Ingrese un correo electrónico válido.");
+        }
+        return true;
+      },
+      trigger: ["input", "blur"],
+    },
+  ],
+  firmaEmpleado: [
+    {
+      required: true,
+      validator(rule, value) {
+        if (!value) {
+          return new Error("La firma del empleado es obligatoria.");
+        }
+        return true;
+      },
+      trigger: ["change"],
+    },
+  ],
+};
+
     const formRef = ref(null);
     const formValue = ref({
       roles: null,
       nombre: "Joana Andrea",
       apellidos: "Quintero Martinez",
-      departamento: "Almacen",
-      puesto: "Acomodador",
+      departamentos: null,
+      puesto: null,
       codigoUsuario: "23413",
       email: "ejemplo@gmail.com",
       firmaEmpleado: null,
     });
 
     return {
+      handleValidateClick,
+      handleFileUpload,
       formRef,
       optionsRol: [
         { label: "Administrador", value: "valor1" },
@@ -164,16 +220,6 @@ export default defineComponent({
       ],
       formValue,
       rules,
-      handleValidateClick(e) {
-        e.preventDefault();
-        formRef.value?.validate((errors) => {
-          if (!errors) {
-            console.log("Sin errores", JSON.stringify(formValue.value));
-          } else {
-            console.log(errors);
-          }
-        });
-      },
     };
   },
 });
