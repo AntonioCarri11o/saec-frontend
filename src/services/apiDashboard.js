@@ -1,6 +1,6 @@
 export const getCursos = async () => {
     try {
-      const response = await fetch('https://api.jsonbin.io/v3/qs/67d898eb8a456b796677e280');
+      const response = await fetch('https://api.jsonbin.io/v3/qs/67e220478561e97a50f23a9e');
       if (!response.ok) {
         throw new Error('Error al obtener los datos');
       }
