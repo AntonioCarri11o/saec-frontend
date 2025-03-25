@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
+  <n-config-provider :theme-overrides="themeOverrides">
     <router-view/>    
-  </div>
+  </n-config-provider>
 </template>
 
 <script>

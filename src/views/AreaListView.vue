@@ -9,15 +9,10 @@
         <b>Buscar Curso</b>
         <div style="display: flex">
           <n-input
-            :theme-overrides="{
-              borderHover: '1px solid #005a7f',
-              borderFocus: '1px solid #005a7f',
-              boxShadowFocus: '0 0 4px #005a7f',
-            }"
             class="input-shadow"
             v-model:value="value"
             type="text"
-            placeholder="Nombre del curso"
+            placeholder="Nombre del departamento"
           />
           <n-button type="info" class="input-shadow">
             <Icon> <Search /> </Icon>
@@ -42,7 +37,7 @@
         <CardAreaComponent :nombre="2" />
         <CardAreaComponent :nombre="3" />
         <CardAreaComponent :nombre="4" />
-        <n-empty description="Departamentos no encontrados"/>
+        <!-- <n-empty description="Departamentos no encontrados"/> -->
       </div>
       <div class="footerContainerCardsAreas">
         <n-pagination
@@ -76,7 +71,6 @@ export default defineComponent({
 </script>
 
 <style>
-/* 🔹 Estilos generales */
 .header {
   margin-top: 20px;
   margin-left: 5%;
@@ -85,10 +79,9 @@ export default defineComponent({
   display: flex;
 }
 
-/* 🔹 Controles superiores */
 .containerTop {
   display: flex;
-  flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
+  flex-wrap: wrap;
   gap: 10px;
 }
 
@@ -130,7 +123,6 @@ export default defineComponent({
   height: 20px;
   background-color: #008cb9;
   border-radius: 4px 4px 0 0;
-  box-shadow: -2px 0px 1px rgba(0, 0, 0, 0.2), 2px 0px 1px rgba(0, 0, 0, 0.2);
 }
 
 .footerContainerCardsAreas {
@@ -140,7 +132,7 @@ export default defineComponent({
   height: 50px;
   background-color: #008cb9;
   border-radius: 0 0 4px 4px;
-  box-shadow: -2px 0px 1px rgba(0, 0, 0, 0.2), 2px 0px 1px rgba(0, 0, 0, 0.2);
+  
 }
 
 .bodyContainerCardsAreas {
@@ -148,7 +140,6 @@ export default defineComponent({
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
   padding: 15px;
-  box-shadow: -2px 0px 1px rgba(0, 0, 0, 0.2), 2px 0px 1px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   max-width: 100%;
 }
