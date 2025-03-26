@@ -1,7 +1,7 @@
 <template>
-  <n-config-provider :theme-overrides="themeOverrides">
-    <router-view/>    
-  </n-config-provider>
+<n-config-provider :theme-overrides="themeOverrides">
+    <router-view />
+</n-config-provider>
 </template>
 
 <script>
@@ -11,7 +11,7 @@
 </script>
 
 <style>
-  body {
-    font-family: 'Inter', sans-serif;
-  }
+body {
+  font-family: 'Inter', sans-serif;
+}
 </style>

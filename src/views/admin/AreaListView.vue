@@ -61,7 +61,7 @@
 import { defineComponent } from "vue";
 import { Icon } from "@vicons/utils";
 import { Search, ArrowUp, ArrowDown } from "@vicons/ionicons5";
-import CardAreaComponent from "@/components/CardAreaComponent.vue";
+import CardAreaComponent from "@/components/admin/CardAreaComponent.vue";
 
 export default defineComponent({
   name: "AreaListView",
