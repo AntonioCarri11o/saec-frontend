@@ -33,11 +33,15 @@
     <div class="containerCardsAreas">
       <div class="headContainerCardsAreas"></div>
       <div class="bodyContainerCardsAreas">
-        <CardAreaComponent :nombre="1" />
-        <CardAreaComponent :nombre="2" />
-        <CardAreaComponent :nombre="3" />
-        <CardAreaComponent :nombre="4" />
-        <!-- <n-empty description="Departamentos no encontrados"/> -->
+        <!-- Mostrar los departamentos -->
+        <CardAreaComponent
+          v-for="area in data"
+          :key="area.idDepartment"
+          :nombre="area.name"
+          @click="navigateToDepartment(area.idDepartment)"
+        />
+
+        <n-empty v-if="data.length === 0" description="Departamentos no encontrados" />
       </div>
       <div class="footerContainerCardsAreas">
         <n-pagination
@@ -50,23 +54,47 @@
           v-model:page="page"
           :page-count="10"
           size="small"
-        >
-        </n-pagination>
+        />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, onMounted, ref } from "vue";
+import { useRouter } from "vue-router";
 import { Icon } from "@vicons/utils";
 import { Search, ArrowUp, ArrowDown } from "@vicons/ionicons5";
 import CardAreaComponent from "@/components/admin/CardAreaComponent.vue";
+import { getAllDepartments } from "@/services/departmentsService.js";
 
 export default defineComponent({
   name: "AreaListView",
   components: { CardAreaComponent, Icon, Search, ArrowUp, ArrowDown },
-  setup() {},
+  setup() {
+    const data = ref([]);
+    const router = useRouter();
+
+    const fetchDepartments = async () => {
+      try {
+        const response = await getAllDepartments();
+        data.value = response || [];
+      } catch (error) {
+        console.error("Error al obtener departamentos:", error);
+      }
+    };
+
+    const navigateToDepartment = (id) => {
+      router.push(`/admin/departments/${id}`);
+    };
+
+    onMounted(fetchDepartments);
+
+    return {
+      data,
+      navigateToDepartment,
+    };
+  },
 });
 </script>
 

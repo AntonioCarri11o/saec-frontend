@@ -1,10 +1,10 @@
 <template>
   <div>
-    <n-button :theme-overrides="{textColorTextHover: 'black'}" strong text @click="mensaje">
+    <n-button class="cardStyle" :theme-overrides="{textColorTextHover: 'black'}" strong text @click="mensaje">
       <div class="cardAreaStyle">
         <div class="blue-bar"></div> <!-- Barra azul -->
         <div class="text-content">
-          Laboratorio de química experimental
+          {{ nombre }}
         </div>
       </div>
     </n-button>
@@ -32,7 +32,7 @@ export default defineComponent({
   display: flex;
   align-items: center;
   max-width: 100%;
-  width: 100%;
+  width: 300px;
   margin: 5px;
   border-radius: 8px;
   box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);

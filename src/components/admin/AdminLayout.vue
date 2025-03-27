@@ -2,7 +2,7 @@
     <div class="layout">
         <header class="header">
             <h1>Admin Header</h1>
-        </header>z
+        </header>
         <div class="main-container">
             <aside class="sidebar">
                 <nav>
@@ -12,7 +12,7 @@
                 </nav>
             </aside>
             <main class="content">
-                <slot/>
+                <router-view></router-view>
             </main>
         </div>
     </div>

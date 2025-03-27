@@ -6,12 +6,7 @@ export default [
   {
     path: "/admin",
     component: AdminLayout,
-    children: [{ path: "", component: AdminDashboardView }],
+    children: [{ path: "", component: AdminDashboardView },{path:'departamentos', component:AreaListView}],
     meta: { requiresAuth: true, roles: ['ROLE_ADMIN']}
-  },
-  {
-    path: "/admin/departments",
-    component: AreaListView,
-    meta:{requiresAuth:true,roles:['ROLE_ADMIN']}
   }
 ];
