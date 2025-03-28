@@ -1,7 +1,7 @@
 import {createRouter, createWebHistory} from 'vue-router';
 
 // importaciones de vistas
-import UpdateUserView from '../views/UpdateUserView.vue'
+import UpdateUserView from '../views/admin/UpdateUserView.vue'
 import App from '../App.vue'
 
 //lista de rutas

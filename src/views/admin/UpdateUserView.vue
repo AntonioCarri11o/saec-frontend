@@ -4,17 +4,19 @@
     <div class="header">
       <div>
         <n-breadcrumb>
-          <n-breadcrumb-item>Empleados</n-breadcrumb-item>
+          <n-breadcrumb-item>
+            <router-link to="/admin/empleados"> <Icon><People/></Icon> Empleados</router-link>
+          </n-breadcrumb-item>
           <n-breadcrumb-item>Editar datos</n-breadcrumb-item>
         </n-breadcrumb>
       </div>
       <div>
-        <p>Editar Empleado</p>
+        <p style="color: #0D5A79;font-size: 40px;">Editar Empleado</p>
       </div>
     </div>
 
     <!-- Cuerpo -->
-    <div class="container">
+    <div class="containerFormUpdateEmployee">
       <n-form ref="formRef" :model="formValue" :rules="rules" label-placement="top">
         <n-form-item path="roles" label="Rol">
           <n-select
@@ -77,8 +79,13 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import {Icon} from '@vicons/utils';
+import {People} from "@vicons/ionicons5";
 
 export default defineComponent({
+
+  name:"UpdateuserView",
+  components:{Icon,People},
   setup() {
     const handleValidateClick = async () => {
   try {
@@ -248,8 +255,9 @@ const rules = {
 }
 
 
-.container {
-  padding: 20px;
+.containerFormUpdateEmployee {
+  padding: 30px;
+  max-width: 100%; 
 }
 
 .grid-container {

@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import naive from "naive-ui";
 import './styles/fonts.css';
-import router from './router/index.js';
+import router from '@/router/main';
 import { NConfigProvider, NGlobalStyle } from "naive-ui";
 
 const app = createApp(App);

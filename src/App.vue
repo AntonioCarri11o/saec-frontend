@@ -1,16 +1,15 @@
 <template>
   <n-config-provider :theme-overrides="themeOverrides">
-    <UpdateUserView/>
+    <router-view />
   </n-config-provider>
 </template>
 
 <script>
 import themeOverrides from "@/assets/naive-ui-theme-overrides.json";
-import UpdateUserView from './views/UpdateUserView.vue';
+
 export default {
   name: 'App',
   components: {
-    UpdateUserView,
   },
   data(){
     return{
@@ -21,4 +20,14 @@ export default {
 </script>
 
 <style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* text-align: center; */
+  /* TEXTO CENTRADO ELIMINADO POR CENTRAR TODO EL TEXTO DE LOS INPUTS Y LAS VISTAS */
+  color: #2c3e50;
+  /* margin-top: 60px; */
+  /* MARGEN ELIMINADO POR DESING MAL ESTRUCTURADO */
+}
 </style>
