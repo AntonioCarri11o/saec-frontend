@@ -1,15 +1,12 @@
 <template>
-  <DashboardEmployeeView/>
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script>
-import DashboardEmployeeView from './views/DashboardEmployeeView.vue';
-
 export default {
-  name: 'App',
-  components: {
-    DashboardEmployeeView
-  }
+  name: 'App'
 }
 </script>
 
