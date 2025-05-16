@@ -1,5 +1,5 @@
 import AdminLayout from "@/components/admin/AdminLayout.vue";
-import AdminDashboardView from "@/views/admin/AdminDashboardView.vue";
+import AdminDashboardView from "@/views/Admin/AdminDashboardView.vue";
 
 export default [
   {
