@@ -1,11 +1,11 @@
-import TeacherLayout from "@/components/teacher/TeacherLayout.vue";
-import TeacherDashboardView from "@/views/teacher/TeacherDashboardView.vue";
+import GeneralPanel from "@/views/teacher/GeneralPanel.vue";
+import TeacherLayout from "@/views/teacher/TeacherLayout.vue";
 
 export default [
   {
     path: "/teacher",
     component: TeacherLayout,
-    children: [{ path: "", component: TeacherDashboardView }],
+    children: [{ path: "", component: GeneralPanel }],
     meta: { requiresAuth: true, roles: ['ROLE_TEACHER']}
   },
 ];
