@@ -1,5 +1,6 @@
 <template>
-    <n-menu
+    <n-space>
+            <n-menu
     :theme-overrides="menuOptionThemeOverrides"
     :options="menuOptions"
     collapse-mode="width"
@@ -7,7 +8,8 @@
     :width="240"
     :value="currentModule"
     :collapsed="collapsed"
-    />
+    />        
+    </n-space>
     
 </template>
 <script>
@@ -23,8 +25,7 @@ const renderMenuIcon = (icon) => {
 export default defineComponent ({
     name: 'AdminSideBar',
     props: {
-        collapsed: Boolean,
-        currentModule: String
+        'currentModule': String
     },
     setup() {
     },
@@ -61,7 +62,7 @@ export default defineComponent ({
                         },
                         { default: () => 'Departamentos' }
                     ),
-                    key: 'departments',
+                    key: 'department',
                     icon: renderMenuIcon(BusinessSharp)
                 },
             ],
@@ -82,8 +83,5 @@ export default defineComponent ({
             },
         }
     },
-    mounted() {
-        console.log(this.currentModule)
-    }
 });
 </script>

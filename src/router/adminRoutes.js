@@ -9,13 +9,13 @@ export default [
     component: AdminLayout,
     children: [
       {
-        path: "course", component: CourseListView, label: 'Curso'
+        path: "course", component: CourseListView, label: 'Cursos'
       },
       {
-        path: "employee", component: EmployeeListView, label: 'Empleado'
+        path: "employee", component: EmployeeListView, label: 'Empleados'
       },
       {
-        path: "department", component: DepartmentListView, label: 'Department'
+        path: "department", component: DepartmentListView, label: 'Departmentos'
       }
     ],
     meta: { requiresAuth: true, roles: ['ROLE_ADMIN']}
