@@ -17,7 +17,7 @@
           @update:value="(value) => handleInputChange('password', value)"
           placeholder="Ingresa tu contraseña"
           show-password-on="click"
-          :maxlength="8"
+          :maxlength="20"
           clearable
         />
       </n-form-item>

@@ -1,34 +1,12 @@
-const API_BASE = process.env.VUE_APP_API_BASE_URL;
+const API_BASE = process.env.VUE_APP_API_URL;
+import api from "@/config/interceptor";
 
 export const loginService = (username, password) => {
-    return fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            console.error(`LoginRequest error: ${data.message}`);
-            return {
-                success: false,
-                message: data.message
-            };
-        } else{
-            console.log(`LoginRequest successful: ${data.message}`);
-            localStorage.setItem("t", data.data);
-            return {
-                success: true,
-            };
-        }
+    return api.post(`${API_BASE}/auth/login`, { username, password }, { headers: {'Content-Type': 'application/json'} })
+    .then(response => {
+        localStorage.setItem('t', response.data);
     })
     .catch(error => {
-        console.error(`LoginRequest unexpected error ${error}`);
-        return {
-            success: false,
-            message: 'Error durante la solicitud'
-        }
+        throw error;
     });
 }

@@ -30,6 +30,8 @@ import { NButton } from "naive-ui";
 import LoginForm from "@/components/public/LoginForm.vue";
 import RecoverPasswordModal from "@/components/public/RecoveryPasswordModal.vue";
 import { loginService } from "@/services/authService.js";
+import { useRouter } from 'vue-router';
+
 
 export default {
   components: {
@@ -41,6 +43,7 @@ export default {
     const logoPng = ref(require("@/assets/IPMlogo.png"));
     const logoWebp = ref(require("@/assets/IPMlogo.webp"));
     const showModal = ref(false);
+    const router = useRouter();
     const form = ref({
       username: "",
       password: "",
@@ -60,12 +63,11 @@ export default {
 
     const handleSubmit = async (formData) => {
       console.log("Intentando iniciar sesion...");
-      const response = await loginService(formData.username, formData.password);
-      if (response.success) {
-        window.location.reload();
-      } else {
-        console.error("Error en el login:", response.message);
-      }
+      await loginService(formData.username, formData.password)
+      .then(() => {
+        router.push('/admin');
+      })
+      .catch( error => console.log(error));
     };
 
     const toggleModal = () => {
