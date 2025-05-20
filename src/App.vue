@@ -11,6 +11,7 @@
 </script>
 
 <style>
+@import "@/styles/shared.css";
 html, body, #app {
   height: 100vh;
   width: 100%;

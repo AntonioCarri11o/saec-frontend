@@ -6,7 +6,8 @@
           :collapsed-width="68"
           :width="sideBarWidth"
           >
-          <n-space justify="space-between">
+          <n-flex vertical class="h-100">
+            <n-space justify="space-between">
             <n-image v-if="!isSideBarCollapsed"
             :src="logo" width="75"
             preview-disabled
@@ -17,17 +18,20 @@
                 </n-icon>            
               </n-button>                                      
           </n-space>
-          <n-space vertical class="menu-container">
+          <n-space vertical class="menu-container h-100" item-class="h-100">
             <AdminSideBar :currentModule="currentPathModule"/>
-          </n-space>
-          
+          </n-space>          
+          </n-flex>
+
           </n-layout-sider>
           <n-layout class="n-layout-container">
             <n-layout-header>
               <NavigationBreadcrumb/>
             </n-layout-header>
             <n-layout-content class="n-layout-body">
-              <router-view/>
+                <div class="work-zone">
+                  <router-view/>
+                </div>
             </n-layout-content>
           </n-layout>          
         </n-layout>
@@ -79,7 +83,7 @@ const sideBarWidth = computed(() => {
 
 </script>
 
-<style scoped>
+<style>
 .n-layout-container {
   height: 100%;
   width: 100%;
@@ -87,12 +91,22 @@ const sideBarWidth = computed(() => {
 
 .n-layout-body {
   padding: 24px;
+
 }
+
+.n-layout-body > .n-layout-scroll-container {
+  align-items: center;
+}
+
 .n-layout-sider {
   padding: 8px;
   background-color: #0d5a79;
 }
 
+.n-layout-scroll-container {
+  display: flex;
+  flex-direction: column;
+}
 .menu-container {
   padding: 24px 0 24px 0;
 }

@@ -1,7 +1,7 @@
 import AdminLayout from "@/views/Admin/AdminLayout.vue";
 import CourseListView from "@/views/Admin/CourseListView.vue";
 import EmployeeListView from "@/views/Admin/EmployeeListView.vue";
-import DepartmentListView from "@/views/Admin/DepartmentListView.vue";
+import DepartmentListView from "@/views/Admin/department/DepartmentListView.vue";
 
 export default [
   {

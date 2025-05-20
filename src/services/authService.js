@@ -10,3 +10,7 @@ export const loginService = (username, password) => {
         throw error;
     });
 }
+
+export const logoutService = () => {
+    localStorage.removeItem('t');
+}
